@@ -1,15 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+const Part = (props) => {
+  return (
+    <p>
+      {props.part} {props.excercises}
+    </p>
+  );
+};
+
 const Header = (props) => {
   return <h1>{props.course}</h1>;
 };
 
 const Content = (props) => {
   return (
-    <p>
-      {props.part} {props.excercises}
-    </p>
+    <div>
+      <Part part={props.part1} excercises={props.excercises1} />
+      <Part part={props.part2} excercises={props.excercises2} />
+      <Part part={props.part3} excercises={props.excercises3} />
+    </div>
   );
 };
 
@@ -29,9 +39,14 @@ const App = () => {
   return (
     <>
       <Header course={course} />
-      <Content part={part1} excercises={exercises1} />
-      <Content part={part2} excercises={exercises2} />
-      <Content part={part3} excercises={exercises3} />
+      <Content
+        part1={part1}
+        part2={part2}
+        part3={part3}
+        excercises1={exercises1}
+        excercises2={exercises2}
+        excercises3={exercises3}
+      />
       <Total excercises={exercises1 + exercises2 + exercises3} />
     </>
   );
