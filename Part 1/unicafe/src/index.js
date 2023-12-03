@@ -11,14 +11,16 @@ const ReviewStatistics = (props) => {
     );
   } else {
     return (
-      <div>
-        <StatisticsLine text={'Good'} value={props.good} />
-        <StatisticsLine text={'Neutral'} value={props.neutral} />
-        <StatisticsLine text={'Bad'} value={props.bad} />
-        <StatisticsLine text={'All'} value={props.all} />
-        <StatisticsLine text={'Average'} value={props.average} />
-        <StatisticsLine text={'Positive'} value={props.positive + '%'} />
-      </div>
+      <table>
+        <tbody>
+          <StatisticsLine text={'Good'} value={props.good} />
+          <StatisticsLine text={'Neutral'} value={props.neutral} />
+          <StatisticsLine text={'Bad'} value={props.bad} />
+          <StatisticsLine text={'All'} value={props.all} />
+          <StatisticsLine text={'Average'} value={props.average} />
+          <StatisticsLine text={'Positive'} value={props.positive + '%'} />
+        </tbody>
+      </table>
     );
   }
 };
@@ -39,9 +41,10 @@ const Button = ({ handleClick, review }) => {
 
 const StatisticsLine = ({ text, value }) => {
   return (
-    <p>
-      {text}: {value}
-    </p>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
   );
 };
 
