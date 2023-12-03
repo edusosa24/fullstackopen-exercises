@@ -12,27 +12,35 @@ const ReviewStatistics = (props) => {
   } else {
     return (
       <div>
-        <ul>
-          <li>Good: {props.good}</li>
-          <li>Neutral: {props.neutral}</li>
-          <li>Bad: {props.bad}</li>
-          <li>All: {props.all}</li>
-          <li>Average: {props.average}</li>
-          <li>Positive: {props.positive}%</li>
-        </ul>
+        <StatisticsLine text={'Good'} value={props.good} />
+        <StatisticsLine text={'Neutral'} value={props.neutral} />
+        <StatisticsLine text={'Bad'} value={props.bad} />
+        <StatisticsLine text={'All'} value={props.all} />
+        <StatisticsLine text={'Average'} value={props.average} />
+        <StatisticsLine text={'Positive'} value={props.positive + '%'} />
       </div>
     );
   }
 };
 
-const ReviewButton = ({ review, handleClick }) => {
+const ReviewButtons = (props) => {
+  return (
+    <div>
+      <Button handleClick={props.handleClickGood} review={'Good'} />
+      <Button handleClick={props.handleClickNeutral} review={'Neutral'} />
+      <Button handleClick={props.handleClickBad} review={'Bad'} />
+    </div>
+  );
+};
+
+const Button = ({ handleClick, review }) => {
   return <button onClick={handleClick}>{review}</button>;
 };
 
-const ReviewData = ({ review, counter }) => {
+const StatisticsLine = ({ text, value }) => {
   return (
     <p>
-      {review} {counter}
+      {text}: {value}
     </p>
   );
 };
@@ -83,11 +91,11 @@ const App = () => {
     <>
       <h1>Give feedback</h1>
       <br />
-      <div>
-        <ReviewButton review="good" handleClick={increaseGood} />
-        <ReviewButton review="neutral" handleClick={increaseNeutral} />
-        <ReviewButton review="bad" handleClick={increaseBad} />
-      </div>
+      <ReviewButtons
+        handleClickGood={increaseGood}
+        handleClickNeutral={increaseNeutral}
+        handleClickBad={increaseBad}
+      />
       <br />
       <h2>Statistics</h2>
       <br />
