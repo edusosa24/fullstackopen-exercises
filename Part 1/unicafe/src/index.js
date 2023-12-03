@@ -3,18 +3,26 @@ import ReactDOM from 'react-dom';
 import { useState } from 'react';
 
 const ReviewStatistics = (props) => {
-  return (
-    <div>
-      <ul>
-        <li>Good: {props.good}</li>
-        <li>Neutral: {props.neutral}</li>
-        <li>Bad: {props.bad}</li>
-        <li>All: {props.all}</li>
-        <li>Average: {props.average}</li>
-        <li>Positive: {props.positive}%</li>
-      </ul>
-    </div>
-  );
+  if (props.good === 0 && props.bad === 0 && props.neutral === 0) {
+    return (
+      <div>
+        <p>No feedback given</p>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <ul>
+          <li>Good: {props.good}</li>
+          <li>Neutral: {props.neutral}</li>
+          <li>Bad: {props.bad}</li>
+          <li>All: {props.all}</li>
+          <li>Average: {props.average}</li>
+          <li>Positive: {props.positive}%</li>
+        </ul>
+      </div>
+    );
+  }
 };
 
 const ReviewButton = ({ review, handleClick }) => {
