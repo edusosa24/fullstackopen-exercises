@@ -2,6 +2,34 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { useState } from 'react';
 
+const Anecdotes = ({ anecdote, votes }) => {
+  return (
+    <div>
+      <h1>Anecdote of the day</h1>
+      <p>{anecdote}</p>
+      <p>Has {votes} votes</p>
+    </div>
+  );
+};
+
+const Buttons = ({ handleClickVote, handleClickRandom }) => {
+  return (
+    <div>
+      <button onClick={handleClickVote}>Vote</button>
+      <button onClick={handleClickRandom}>Next anecdote</button>
+    </div>
+  );
+};
+
+const TopAnecdote = ({ anecdote }) => {
+  return (
+    <div>
+      <h2>Most voted anecdote</h2>
+      <p>{anecdote}</p>
+    </div>
+  );
+};
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -16,6 +44,7 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
+  const [topAnecdote, setTopAnecdote] = useState(anecdotes[0]);
 
   const selectRandomAnecdote = () => {
     const randomNumber = Math.floor(Math.random() * anecdotes.length);
@@ -26,16 +55,25 @@ const App = () => {
     const copy = [...votes];
     copy[selected]++;
     setVotes(copy);
+    updateTopAnecdote(copy);
+  };
+
+  const updateTopAnecdote = (votes) => {
+    const auxMax = Math.max(...votes);
+    const auxPosition = votes.indexOf(auxMax);
+
+    setTopAnecdote(anecdotes[auxPosition]);
   };
 
   return (
     <>
-      <p>{anecdotes[selected]}</p>
-      <p>Has {votes[selected]} votes</p>
-      <div>
-        <button onClick={addVote}>Vote</button>
-        <button onClick={selectRandomAnecdote}>Next anecdote</button>
-      </div>
+      <Anecdotes anecdote={anecdotes[selected]} votes={votes[selected]} />
+      <Buttons
+        handleClickRandom={selectRandomAnecdote}
+        handleClickVote={addVote}
+      />
+      <br />
+      <TopAnecdote anecdote={topAnecdote} />
     </>
   );
 };
