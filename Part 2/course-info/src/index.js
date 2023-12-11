@@ -34,14 +34,11 @@ const Content = (props) => {
 };
 
 const Total = (props) => {
-  return (
-    <p>
-      Number of excercises{' '}
-      {props.exercises[0].exercises +
-        props.exercises[1].exercises +
-        props.exercises[2].exercises}
-    </p>
+  const total = props.exercises.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.exercises,
+    0
   );
+  return <p>Number of excercises {total}</p>;
 };
 
 const App = () => {
