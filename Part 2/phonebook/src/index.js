@@ -11,10 +11,25 @@ const App = () => {
     setNewName(event.target.value);
   };
 
+  const isNoDuplicate = () => {
+    let isValid = true;
+    persons.forEach((person) => {
+      if (person.name === newName && isValid) {
+        isValid = false;
+      }
+    });
+    return isValid;
+  };
+
   const handleNewName = (event) => {
     event.preventDefault();
-    setPersons(persons.concat({ name: newName }));
-    setNewName('');
+    const isValid = isNoDuplicate();
+    if (isValid) {
+      setPersons(persons.concat({ name: newName }));
+      setNewName('');
+    } else {
+      alert(`${newName} is already on the phonebook.`);
+    }
   };
 
   return (
@@ -22,7 +37,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <form>
         <div>
-          name: <input onChange={handleNameChange} />
+          name: <input value={newName} onChange={handleNameChange} />
         </div>
         <div>
           <button type="submit" onClick={handleNewName}>
