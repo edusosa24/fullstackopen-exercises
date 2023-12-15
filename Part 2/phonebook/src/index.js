@@ -30,7 +30,11 @@ const App = () => {
         persons={persons}
         setPersons={setPersons}
       />
-      <ContactsDisplay filterName={filterName} persons={persons} />
+      <ContactsDisplay
+        filterName={filterName}
+        persons={persons}
+        setPersons={setPersons}
+      />
     </>
   );
 };

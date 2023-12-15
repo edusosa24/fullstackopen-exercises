@@ -10,7 +10,12 @@ const postPerson = (person) => {
   return axios.post(baseURL, person).then((response) => response.data);
 };
 
+const deletePerson = (id) => {
+  axios.delete(`${baseURL}/${id}`);
+};
+
 export default {
   getPersons,
   postPerson,
+  deletePerson,
 };

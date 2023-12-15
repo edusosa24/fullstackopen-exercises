@@ -35,7 +35,7 @@ export const AddContact = ({
       const person = {
         name: newName,
         number: newNumber,
-        id: persons.length + 1,
+        id: persons[persons.length - 1].id + 1,
       };
       services
         .postPerson(person)

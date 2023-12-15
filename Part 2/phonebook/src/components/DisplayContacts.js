@@ -1,4 +1,6 @@
-export const ContactsDisplay = ({ filterName, persons }) => {
+import services from '../services/services';
+
+export const ContactsDisplay = ({ filterName, persons, setPersons }) => {
   const filterPersons = () => {
     const filteredPersons = [];
     if (filterName === '') {
@@ -13,12 +15,21 @@ export const ContactsDisplay = ({ filterName, persons }) => {
     return filteredPersons;
   };
 
+  const handleDelete = (id) => {
+    if (confirm('Are you sure you want to delete this?')) {
+      const tempPerson = persons.indexOf((person) => person.id === id);
+      services.deletePerson(id);
+      setPersons(persons.filter((person) => person.id !== id));
+    }
+  };
+
   return (
     <div>
       <h3>Contacts</h3>
       {filterPersons().map((person) => (
-        <p key={person.name}>
-          {person.name}, {person.number}
+        <p key={person.id}>
+          {person.name}, {person.number}{' '}
+          <button onClick={() => handleDelete(person.id)}> Delete </button>
         </p>
       ))}
     </div>
