@@ -18,25 +18,15 @@ export const AddContact = ({
     setNewNumber(event.target.value);
   };
 
-  const isNoDuplicate = () => {
-    let isValid = true;
-    persons.forEach((person) => {
-      if (person.name === newName && isValid) {
-        isValid = false;
-      }
-    });
-    return isValid;
-  };
-
   const handleNewPerson = (event) => {
     event.preventDefault();
-    const isValid = isNoDuplicate();
-    if (isValid) {
-      const person = {
-        name: newName,
-        number: newNumber,
-        id: persons[persons.length - 1].id + 1,
-      };
+    const personsExist = persons.findIndex((person) => person.name === newName);
+    const person = {
+      name: newName,
+      number: newNumber,
+      id: personsExist,
+    };
+    if (personsExist < 0) {
       services
         .postPerson(person)
         .then((response) => {
@@ -48,7 +38,28 @@ export const AddContact = ({
           console.log(error);
         });
     } else {
-      alert(`${newName} is already on the phonebook.`);
+      if (
+        confirm(
+          `${newName} is already on the phonebook. Do you want to replace its number?`
+        )
+      ) {
+        services
+          .putPerson(person)
+          .then(() => {
+            const updatePersons = persons.map((person) => {
+              if (person.name === newName) {
+                person.number = newNumber;
+              }
+              return person;
+            });
+            setPersons(updatePersons);
+            setNewNumber('');
+            setNewName('');
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
   };
 
