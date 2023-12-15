@@ -1,3 +1,5 @@
+import services from '../services/services';
+
 export const AddContact = ({
   newName,
   setNewName,
@@ -30,9 +32,21 @@ export const AddContact = ({
     event.preventDefault();
     const isValid = isNoDuplicate();
     if (isValid) {
-      setPersons(persons.concat({ name: newName, number: newNumber }));
-      setNewNumber('');
-      setNewName('');
+      const person = {
+        name: newName,
+        number: newNumber,
+        id: persons.length + 1,
+      };
+      services
+        .postPerson(person)
+        .then((response) => {
+          setPersons(persons.concat(response));
+          setNewNumber('');
+          setNewName('');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       alert(`${newName} is already on the phonebook.`);
     }

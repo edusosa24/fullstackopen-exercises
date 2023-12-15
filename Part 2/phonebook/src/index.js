@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { AddContact } from './components/AddContact';
 import { FilterByName } from './components/FilterByName';
 import { ContactsDisplay } from './components/DisplayContacts';
+import services from './services/services';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -13,8 +13,8 @@ const App = () => {
   const [filterName, setFilterName] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons').then((response) => {
-      setPersons(response.data);
+    services.getPersons().then((response) => {
+      setPersons(response);
     });
   }, []);
 
