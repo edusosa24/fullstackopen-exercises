@@ -7,6 +7,7 @@ export const AddContact = ({
   setNewNumber,
   persons,
   setPersons,
+  setSuccessMessage,
 }) => {
   const handleNameChange = (event) => {
     event.preventDefault();
@@ -21,15 +22,18 @@ export const AddContact = ({
   const handleNewPerson = (event) => {
     event.preventDefault();
     const personsExist = persons.findIndex((person) => person.name === newName);
+    const personId =
+      personsExist === -1 ? persons.slice(-1).id : persons[personsExist].id;
     const person = {
       name: newName,
       number: newNumber,
-      id: personsExist,
+      id: personsExist === -1 ? persons.slice(-1).id : personId,
     };
     if (personsExist < 0) {
       services
         .postPerson(person)
         .then((response) => {
+          setSuccessMessage(`${person.name} added to contacts`);
           setPersons(persons.concat(response));
           setNewNumber('');
           setNewName('');
@@ -52,6 +56,7 @@ export const AddContact = ({
               }
               return person;
             });
+            setSuccessMessage(`${person.name} number updated`);
             setPersons(updatePersons);
             setNewNumber('');
             setNewName('');
