@@ -22,12 +22,9 @@ export const AddContact = ({
   const handleNewPerson = (event) => {
     event.preventDefault();
     const personsExist = persons.findIndex((person) => person.name === newName);
-    const personId =
-      personsExist === -1 ? persons.slice(-1).id : persons[personsExist].id;
     const person = {
       name: newName,
       number: newNumber,
-      id: personsExist === -1 ? persons.slice(-1).id : personId,
     };
     if (personsExist < 0) {
       services
@@ -47,6 +44,7 @@ export const AddContact = ({
           `${newName} is already on the phonebook. Do you want to replace its number?`
         )
       ) {
+        person.id = persons[personsExist].id;
         services
           .putPerson(person)
           .then(() => {
