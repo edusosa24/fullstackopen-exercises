@@ -19,4 +19,24 @@ const createBlog = async (data, headers) => {
   return response.data;
 };
 
-export default { getAll, createBlog };
+const updateBlog = async (id, data, headers) => {
+  const response = await axios
+    .put(`${baseUrl}/blogs/${id}`, data, { headers: headers })
+    .catch((e) => {
+      console.log(e.message);
+      throw e;
+    });
+  return response.data;
+};
+
+const deleteBlog = async (id, headers) => {
+  const response = await axios
+    .delete(`${baseUrl}/blogs/${id}`, { headers: headers })
+    .catch((e) => {
+      console.log(e.message);
+      throw e;
+    });
+  return response.data;
+};
+
+export default { getAll, createBlog, updateBlog, deleteBlog };
