@@ -37,6 +37,25 @@ const App = () => {
     }
   }, []);
 
+  const handleLike = async (blog) => {
+    try {
+      const data = {
+        title: blog.title,
+        author: blog.author,
+        url: blog.url,
+        likes: blog.likes + 1,
+      };
+      const headers = {
+        authorization: `Bearer ${user.token}`,
+      };
+
+      await blogService.updateBlog(blog.id, data, headers);
+      setAux(aux + 1);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const handleLogout = (event) => {
     event.preventDefault();
     window.localStorage.removeItem('blogAppLoginData');
@@ -120,7 +139,14 @@ const App = () => {
       </Togglable>
       <br />
       {blogs.map((blog) => (
-        <Blog aux={aux} setAux={setAux} user={user} key={blog.id} blog={blog} />
+        <Blog
+          aux={aux}
+          setAux={setAux}
+          user={user}
+          key={blog.id}
+          blog={blog}
+          handleLike={handleLike}
+        />
       ))}
     </>
   );
