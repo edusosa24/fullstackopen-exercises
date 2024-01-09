@@ -5,7 +5,7 @@ const Filter = () => {
   const dispatch = useDispatch();
 
   const handleChange = (event) => {
-    dispatch(updateFilter(event.target.value));
+    dispatch({ type: updateFilter, payload: event.target.value });
   };
   const style = {
     marginBottom: 10,

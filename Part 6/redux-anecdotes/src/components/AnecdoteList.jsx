@@ -1,25 +1,27 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { upVote } from '../reducers/anecdoteReducer';
+import {
+  upVoteNotification,
+  resetNotification,
+} from '../reducers/notificationReducer';
 
 const AnecdoteList = () => {
   const anecdotes = useSelector((state) => {
-    if (state.filter === '') {
-      return state.anecdotes;
-    }
-
-    const fil = Object.values(state.filter)[0];
-
-    const filtered = state.anecdotes.filter((anecdote) =>
-      anecdote.content.includes(fil)
+    return state.anecdotes.filter((anecdote) =>
+      anecdote.content.includes(state.filter.filter)
     );
-
-    return filtered;
   });
 
   const dispatch = useDispatch();
 
   const vote = (id) => {
-    dispatch(upVote(id));
+    dispatch({ type: upVote, payload: { id } });
+    const anecdote = anecdotes.find((anecdote) => anecdote.id === id);
+    dispatch({ type: upVoteNotification, payload: anecdote.content });
+
+    setTimeout(() => {
+      dispatch({ type: resetNotification, payload: '' });
+    }, 5000);
   };
 
   return (
