@@ -1,10 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { createAnecdote } from '../reducers/anecdoteReducer';
-import {
-  createNotification,
-  resetNotification,
-} from '../reducers/notificationReducer';
-import services from '../services/services';
+import { setNotification } from '../reducers/notificationReducer';
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch();
@@ -13,18 +9,8 @@ const AnecdoteForm = () => {
     event.preventDefault();
     const content = event.target.anecdote.value;
     event.target.anecdote.value = '';
-
-    const anecdote = await services.postOne({
-      content,
-      votes: 0,
-    });
-
-    dispatch({ type: createAnecdote, payload: anecdote });
-    dispatch({ type: createNotification, payload: content });
-
-    setTimeout(() => {
-      dispatch({ type: resetNotification, payload: '' });
-    }, 5000);
+    dispatch(createAnecdote(content));
+    dispatch(setNotification(`Anecdote "${content}" successfully created`, 5));
   };
 
   return (

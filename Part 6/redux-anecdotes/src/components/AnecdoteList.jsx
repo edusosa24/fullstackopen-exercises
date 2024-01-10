@@ -1,9 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { upVote } from '../reducers/anecdoteReducer';
-import {
-  upVoteNotification,
-  resetNotification,
-} from '../reducers/notificationReducer';
+import { setNotification } from '../reducers/notificationReducer';
 
 const AnecdoteList = () => {
   const anecdotes = useSelector((state) => {
@@ -15,13 +12,10 @@ const AnecdoteList = () => {
   const dispatch = useDispatch();
 
   const vote = (id) => {
-    dispatch({ type: upVote, payload: { id } });
     const anecdote = anecdotes.find((anecdote) => anecdote.id === id);
-    dispatch({ type: upVoteNotification, payload: anecdote.content });
 
-    setTimeout(() => {
-      dispatch({ type: resetNotification, payload: '' });
-    }, 5000);
+    dispatch(upVote(anecdote));
+    dispatch(setNotification(`Up voted "${anecdote.content}" anecdote`, 5));
   };
 
   return (
