@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { useState } from 'react';
 import { Routes, Route, Link, useMatch, useNavigate } from 'react-router-dom';
+import { useField } from './hooks';
 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
@@ -61,26 +62,34 @@ const Footer = (props) => (
 );
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('');
-  const [author, setAuthor] = useState('');
-  const [info, setInfo] = useState('');
+  const content = useField('text');
+  const author = useField('text');
+  const info = useField('text');
 
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.inputFields.value,
+      author: author.inputFields.value,
+      info: info.inputFields.value,
       votes: 0,
     });
     navigate('/');
-    props.setNotification(`A new anecdote from ${author} was created`);
+    props.setNotification(
+      `A new anecdote from ${author.inputFields.value} was created`
+    );
 
     setTimeout(() => {
       props.setNotification('');
     }, 5000);
+  };
+
+  const handleReset = (fields) => {
+    fields.forEach((field) => {
+      field.reset();
+    });
   };
 
   return (
@@ -89,29 +98,23 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <input {...content.inputFields} />
         </div>
         <div>
           author
-          <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+          <input {...author.inputFields} />
         </div>
         <div>
           url for more info
-          <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
-          />
+          <input {...info.inputFields} />
         </div>
         <button>create</button>
+        <button
+          type="button"
+          onClick={() => handleReset([content, author, info])}
+        >
+          reset
+        </button>
       </form>
     </div>
   );
